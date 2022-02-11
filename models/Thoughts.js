@@ -47,6 +47,12 @@ const ThoughtsSchema = (
             required: true
         }, 
         reactions: [ReactionsSchema]
+    },
+    {
+        toJson: {
+            getters: true,
+            virtuals: true
+        }
     }
 );
 
