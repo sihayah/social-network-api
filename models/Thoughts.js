@@ -1,7 +1,7 @@
 const { Schema, model, Types } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
-const ReactionsSchema = (
+const ReactionsSchema = new Schema (
     {
         reactionId: {
             type: Types.ObjectId,
@@ -29,7 +29,7 @@ const ReactionsSchema = (
     }
 )
 
-const ThoughtsSchema = (
+const ThoughtsSchema = new Schema (
     {
         thoughtText: {
             type: String,
@@ -49,7 +49,7 @@ const ThoughtsSchema = (
         reactions: [ReactionsSchema]
     },
     {
-        toJson: {
+        toJSON: {
             getters: true,
             virtuals: true
         }
