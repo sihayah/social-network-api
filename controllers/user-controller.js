@@ -72,8 +72,8 @@ const userController = {
                     return;
                 }
                 res.json(dbUserData)
-                .catch(err => res.status(400).json(err));
             })
+            .catch(err => res.status(400).json(err));
     },
     addFriend({ params, body }, res) {
         User.findByIdAndUpdate(
