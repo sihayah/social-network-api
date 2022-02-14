@@ -61,8 +61,8 @@ const userController = {
                     return;
                 }
                 res.json(dbUserData)
-                .catch(err => res.status(400).json(err));
             })
+             .catch(err => res.status(400).json(err));
     },
     removeUser({ params }, res) {
         User.findByIdAndRemove({ _id: params.id })
