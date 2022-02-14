@@ -1,4 +1,3 @@
-const res = require('express/lib/response');
 const Thoughts = require('../models/Thoughts');
 const User = require('../models/User');
 
@@ -19,9 +18,22 @@ const thoughtControllers = {
             })
             .catch(err => res.status(400).json(err))
     },
-    createThought({ body }, res) {
+    createThought({ params, body }, res) {
         Thoughts.create(body)
-            .then(dbThoughtData => res.json(dbThoughtData))
+            .then(({ _id }) => {
+                return User.findOneAndUpdate(
+                    { _id: params.id },
+                    { $push: { thoughts: _id }},
+                    { new: true }
+                );
+            })
+            .then(dbUserData => {
+                if(!dbUserData) {
+                    res.status(404).json( { message: 'No User with this Id found' })
+                    return;
+                }
+                res.json(dbUserData)
+            })
             .catch(err => res.status(400).json(err))
     },
     removeThought({ params }, res ) {
@@ -46,9 +58,9 @@ const thoughtControllers = {
             .catch(err => res.status(400).json(err));
     },
     addReaction({ params, body }, res) {
-        Thoughts.findOneByIdAndUpdate(
+        Thoughts.findOneAndUpdate(
             { _id: params.thoughtId },
-            { $push: { replies: body } },
+            { $push: { reactions: body } },
             { new: true}
         )
             .then(dbReactionData => res.json(dbReactionData))
